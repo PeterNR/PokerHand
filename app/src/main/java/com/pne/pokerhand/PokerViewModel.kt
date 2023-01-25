@@ -97,7 +97,6 @@ class PokerViewModel @Inject constructor() : ViewModel() {
         val sameValue1 = mutableListOf<Int>()
         val sameValue2 = mutableListOf<Int>()
         val sameType = mutableListOf<Card>()
-        var analysis: String
         var isStraight = true
 
         //get values on hand
@@ -130,39 +129,39 @@ class PokerViewModel @Inject constructor() : ViewModel() {
             }
         }
 
-        //check for straight
-        if (isStraight) {
+        //"analyze
+        val analysis = if (isStraight) {
             if (isFlush) {
                 if (values[4] == 13) {
-                    analysis = "You have a royal flush"
+                    "You have a royal flush"
                 } else {
-                    analysis = "You have a straight flush"
+                    "You have a straight flush"
                 }
             } else {
-                analysis = "You have a straight"
+                "You have a straight"
             }
         } else if (sameValue1.size == 4 || sameValue2.size == 4) {
-            analysis = "You have four of a kind"
+            "You have four of a kind"
         } else if (sameValue1.size == 3 || sameValue2.size == 3) {
             if (sameValue2.size == 2 || sameValue1.size == 2) {
-                analysis = "You have a full house"
+                "You have a full house"
             } else {
                 if (isFlush) {
-                    analysis = "You have a flush"
+                    "You have a flush"
                 } else {
-                    analysis = "You have a three of a kind"
+                    "You have a three of a kind"
                 }
             }
         } else if (sameValue1.size == 2 || sameValue2.size == 2) {
             if (isFlush) {
-                analysis = "You have a flush"
+                "You have a flush"
             } else if (sameValue1.size == 2 && sameValue2.size == 2) {
-                analysis = "You have two pair"
+                "You have two pair"
             } else {
-                analysis = "You have a pair"
+                "You have a pair"
             }
         } else {
-            analysis = "Your highest card is ${showVisualValue(values[values.size - 1])}"
+            "Your highest card is ${showVisualValue(values[values.size - 1])}"
         }
 
         println("1 $sameValue1")
