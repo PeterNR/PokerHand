@@ -85,7 +85,7 @@ fun Hand(
                             ) {
                                 Text(
                                     textAlign = TextAlign.Center,
-                                    text = "${viewModel.ShowVisualValue(it.value)} " +
+                                    text = "${viewModel.showVisualValue(it.value)} " +
                                             "${it.type.toString().first().lowercaseChar()}"
                                 )
                             }
@@ -113,7 +113,7 @@ fun Hand(
                     modifier = Modifier
                         .height(50.dp)
                         .weight(1f),
-                    onClick = { viewModel.ShuffleNewHand(null) }
+                    onClick = { viewModel.shuffleNewHand(null) }
                 ) {
                     Text(text = "Shuffle")
                 }
@@ -125,9 +125,9 @@ fun Hand(
                         .height(50.dp)
                         .weight(1f),
                     onClick = {
-                        viewModel.ToggleSelector()
-                        viewModel.ShuffleNewHand(state.selectedHand)
-                        viewModel.EmptySelectedHand()
+                        viewModel.toggleSelector()
+                        viewModel.shuffleNewHand(state.selectedHand)
+                        viewModel.emptySelectedHand()
                     }
                 ) {
                     Text(text = "Cheat")
@@ -147,10 +147,10 @@ fun AlertSelector(viewModel: PokerViewModel, state: PokerState) {
     var selectedTypeIndex by remember { mutableStateOf(0) }
     val typeList = mutableListOf<CardType>()
 
-    repeat(13) { valueList.add(viewModel.ShowVisualValue(it + 1)) }
+    repeat(13) { valueList.add(viewModel.showVisualValue(it + 1)) }
     CardType.values().forEach { typeList.add(it) }
 
-    Dialog(onDismissRequest = { viewModel.ToggleSelector() }) {
+    Dialog(onDismissRequest = { viewModel.toggleSelector() }) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -190,14 +190,14 @@ fun AlertSelector(viewModel: PokerViewModel, state: PokerState) {
                 ) {
                     if (state.selectedHand.size == 5) {
                         Button(onClick = {
-                            viewModel.ToggleSelector()
-                            viewModel.ShuffleNewHand(state.selectedHand)
+                            viewModel.toggleSelector()
+                            viewModel.shuffleNewHand(state.selectedHand)
                         }) {
                             Text(text = "Done")
                         }
                     } else {
                         Button(onClick = {
-                            viewModel.AddToSelectedHand(
+                            viewModel.addToSelectedHand(
                                 Card(
                                     typeList[selectedTypeIndex],
                                     selectedValueIndex + 1

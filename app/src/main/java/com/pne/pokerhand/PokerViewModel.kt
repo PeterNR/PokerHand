@@ -13,10 +13,10 @@ class PokerViewModel @Inject constructor() : ViewModel() {
     var state by mutableStateOf(PokerState())
 
     init {
-        PopulateDeck()
+        populateDeck()
     }
 
-    private fun PopulateDeck() {
+    private fun populateDeck() {
         val deck = mutableListOf<Card>()
         repeat(13) {
             deck.add(Card(CardType.Hearts, it + 1))
@@ -34,7 +34,7 @@ class PokerViewModel @Inject constructor() : ViewModel() {
         state = state.copy(deck = deck)
     }
 
-    fun ShuffleNewHand(cheatHand: List<Card>?) {
+    fun shuffleNewHand(cheatHand: List<Card>?) {
         val hand = mutableListOf<Card>()
         val deck = mutableListOf<Card>()
 
@@ -79,10 +79,10 @@ class PokerViewModel @Inject constructor() : ViewModel() {
 
         state = state.copy(hand = hand, deck = deck)
 
-        AnalyzeCards()
+        analyzeCards()
     }
 
-    fun ShowVisualValue(value: Int): String {
+    fun showVisualValue(value: Int): String {
         return when (value) {
             13 -> "k"
             12 -> "q"
@@ -92,12 +92,12 @@ class PokerViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun AnalyzeCards() {
+    private fun analyzeCards() {
         val values = mutableListOf<Int>()
         val sameValue1 = mutableListOf<Int>()
         val sameValue2 = mutableListOf<Int>()
         val sameType = mutableListOf<Card>()
-        var analysis = ""
+        var analysis: String
         var isStraight = true
 
         //get values on hand
@@ -110,7 +110,7 @@ class PokerViewModel @Inject constructor() : ViewModel() {
         }
         values.sort()
 
-        var isFlush = sameType.size == state.hand.size
+        val isFlush = sameType.size == state.hand.size
 
         values.forEach {
             if (values[0] + values.indexOf(it) != it)
@@ -162,22 +162,22 @@ class PokerViewModel @Inject constructor() : ViewModel() {
                 analysis = "You have a pair"
             }
         } else {
-            analysis = "Your highest card is ${ShowVisualValue(values[values.size - 1])}"
+            analysis = "Your highest card is ${showVisualValue(values[values.size - 1])}"
         }
 
-        println("1 " + sameValue1)
-        println("2 " + sameValue2)
-        println("t " + sameType)
+        println("1 $sameValue1")
+        println("2 $sameValue2")
+        println("t $sameType")
         state = state.copy(description = analysis)
     }
 
-    fun ToggleSelector() {
+    fun toggleSelector() {
         var isOpen = state.selectorIsOpen
         isOpen = !isOpen
         state = state.copy(selectorIsOpen = isOpen)
     }
 
-    fun AddToSelectedHand(newCard: Card) {
+    fun addToSelectedHand(newCard: Card) {
         var isInHand = false
         val newHand = mutableListOf<Card>()
 
@@ -198,7 +198,7 @@ class PokerViewModel @Inject constructor() : ViewModel() {
         println("this is selected hand ${state.selectedHand}")
     }
 
-    fun EmptySelectedHand(){
+    fun emptySelectedHand(){
         val newHand = emptyList<Card>()
         state = state.copy(selectedHand = newHand)
     }
